@@ -1,6 +1,6 @@
 {
   "name": "token-toll",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "What your language costs you in tokens. Measures how many more tokens the same sentence takes in Turkish and other languages than in English, across the tokenizers real models use.",
   "keywords": [
     "tokenizer",
