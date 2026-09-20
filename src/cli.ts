@@ -6,6 +6,7 @@
  * what does *a language* cost, which needs the corpus and a few minutes.
  */
 
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
 import { aligned, BASELINE, LANGUAGES, loadCorpus } from './corpus.ts';
@@ -14,7 +15,18 @@ import { countAll, measure, wordCount, type Measurement } from './measure.ts';
 import { MODELS } from './registry.ts';
 import { corpusReport, textReport, type Weighed } from './report.ts';
 
-const VERSION = '0.1.0';
+/**
+ * The version, read from the manifest rather than written down twice.
+ *
+ * It was a constant here until a release proved why that is a bad idea:
+ * `npm version` bumps package.json and nothing else, so the published
+ * 0.1.1 introduced itself as 0.1.0. One copy, read at startup — from
+ * ../package.json, which is the manifest whether this file is running from
+ * src/ or from the published dist/.
+ */
+const VERSION = (
+  JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { version: string }
+).version;
 
 const HELP = `token-toll ${VERSION}
 
