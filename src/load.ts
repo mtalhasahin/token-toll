@@ -15,9 +15,9 @@ import { join } from 'node:path';
 import { MODELS, type ModelSpec } from './registry.ts';
 import { Tokenizer, type TokenizerFile } from './tokenizer.ts';
 
-/** Where the files live. `TOKEN_TAX_CACHE` moves it, for CI. */
+/** Where the files live. `TOKEN_TOLL_CACHE` moves it, for CI. */
 export function cacheDir(): string {
-  return process.env['TOKEN_TAX_CACHE'] ?? join(homedir(), '.cache', 'token-tax');
+  return process.env['TOKEN_TOLL_CACHE'] ?? join(homedir(), '.cache', 'token-toll');
 }
 
 const urlFor = (spec: ModelSpec): string =>

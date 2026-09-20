@@ -38,7 +38,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: |
-            ~/.cache/token-tax
+            ~/.cache/token-toll
             ~/.cache/huggingface
           key: tokenizers-${{ hashFiles('src/registry.ts') }}
       - run: node --test "tests/reference.test.ts"

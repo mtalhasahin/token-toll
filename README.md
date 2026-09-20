@@ -1,4 +1,4 @@
-# Token Tax
+# Token Toll
 
 **What your language costs you in tokens.**
 
@@ -9,7 +9,7 @@ table that cuts it up ever saw much of your language. Nobody shows you that numb
 tokenizers.
 
 ```bash
-npx token-tax "Evlerinizden çıkarken şemsiyenizi almayı unutmayın."
+npx token-toll "Evlerinizden çıkarken şemsiyenizi almayı unutmayın."
 ```
 
 ```
@@ -28,7 +28,7 @@ Mistral v3 charges 69% more than Gemma 2 for this exact text.
 Same words, same meaning — the difference is which merge table saw the language during training.
 ```
 
-**[The tables and a live calculator →](https://mtalhasahin.github.io/token-tax)**
+**[The tables and a live calculator →](https://mtalhasahin.github.io/token-toll)**
 
 ---
 
@@ -96,13 +96,13 @@ retrieved passages — that is the part that bites before the bill does.
 ## Using it
 
 ```bash
-npx token-tax "your text here"     # weigh a string in every tokenizer
-npx token-tax --file prompt.txt    # or a file
-cat prompt.txt | npx token-tax     # or a pipe
+npx token-toll "your text here"     # weigh a string in every tokenizer
+npx token-toll --file prompt.txt    # or a file
+cat prompt.txt | npx token-toll     # or a pipe
 
-npx token-tax --corpus                              # measure whole languages
-npx token-tax --corpus --languages turkish,finnish  # just these
-npx token-tax --models gpt-4o,gemma-2 "metin"       # just these tokenizers
+npx token-toll --corpus                              # measure whole languages
+npx token-toll --corpus --languages turkish,finnish  # just these
+npx token-toll --models gpt-4o,gemma-2 "metin"       # just these tokenizers
 ```
 
 Tokenizer files are downloaded once and cached. `--corpus` also fetches a 25 MB sentence corpus.
@@ -111,7 +111,7 @@ Tokenizer files are downloaded once and cached. `--corpus` also fetches a 25 MB 
 As a library, when you want the count and not the table:
 
 ```js
-import { load, modelById } from 'token-tax';
+import { load, modelById } from 'token-toll';
 
 const tokenizer = await load(modelById('gpt-4o'));
 tokenizer.count('Evlerinizden çıkarken şemsiyenizi almayı unutmayın.'); // 17
@@ -148,7 +148,7 @@ network connection.
 Run it yourself — the whole measurement takes about half a minute once the files are cached:
 
 ```bash
-git clone https://github.com/mtalhasahin/token-tax && cd token-tax
+git clone https://github.com/mtalhasahin/token-toll && cd token-toll
 npm install && npm run measure
 ```
 

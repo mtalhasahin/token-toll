@@ -16,14 +16,14 @@ import { corpusReport, textReport, type Weighed } from './report.ts';
 
 const VERSION = '0.1.0';
 
-const HELP = `token-tax ${VERSION}
+const HELP = `token-toll ${VERSION}
 
   What your language costs you in tokens.
 
-  token-tax "your text here"      weigh a string in every tokenizer
-  token-tax --file prompt.txt     weigh a file
-  cat prompt.txt | token-tax      weigh stdin
-  token-tax --corpus              measure whole languages against English
+  token-toll "your text here"      weigh a string in every tokenizer
+  token-toll --file prompt.txt     weigh a file
+  cat prompt.txt | token-toll      weigh stdin
+  token-toll --corpus              measure whole languages against English
 
   --models <a,b>     only these tokenizers (${MODELS.map((m) => m.id).join(', ')})
   --languages <a,b>  with --corpus: only these, as FLORES codes or names
@@ -132,7 +132,7 @@ export async function main(argv: readonly string[]): Promise<number> {
     return 0;
   }
   if ('error' in parsed) {
-    process.stderr.write(`${parsed.error}\n\ntoken-tax --help\n`);
+    process.stderr.write(`${parsed.error}\n\ntoken-toll --help\n`);
     return 2;
   }
   const options = parsed;
