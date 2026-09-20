@@ -76,4 +76,4 @@ jobs:
       # No token, and no --provenance flag: with a trusted publisher npm signs
       # the provenance attestation itself, so the package page can say which
       # commit and which workflow built it.
-      - run: npm publish --access public --loglevel verbose
+      - run: npm publish --access public
