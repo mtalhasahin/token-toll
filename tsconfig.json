@@ -17,10 +17,10 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "src"
   },
   "include": [
-    "src",
-    "scripts"
+    "src"
   ]
 }

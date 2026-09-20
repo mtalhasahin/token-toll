@@ -2,23 +2,50 @@
   "name": "token-tax",
   "version": "0.1.0",
   "description": "What your language costs you in tokens. Measures how many more tokens the same sentence takes in Turkish and other languages than in English, across the tokenizers real models use.",
-  "keywords": ["tokenizer", "tokens", "llm", "turkish", "multilingual", "bpe", "cost", "context-window", "cli"],
+  "keywords": [
+    "tokenizer",
+    "tokens",
+    "llm",
+    "turkish",
+    "multilingual",
+    "bpe",
+    "cost",
+    "context-window",
+    "cli"
+  ],
   "homepage": "https://mtalhasahin.github.io/token-tax",
-  "repository": { "type": "git", "url": "git+https://github.com/mtalhasahin/token-tax.git" },
-  "bugs": { "url": "https://github.com/mtalhasahin/token-tax/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtalhasahin/token-tax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mtalhasahin/token-tax/issues"
+  },
   "license": "MIT",
   "author": "mtalhasahin",
   "type": "module",
-  "bin": { "token-tax": "dist/bin.js" },
-  "exports": { ".": "./dist/index.js" },
-  "files": ["dist", "README.md", "LICENSE"],
-  "engines": { "node": ">=20.10" },
+  "bin": {
+    "token-tax": "dist/bin.js"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.10"
+  },
   "scripts": {
     "build": "tsc",
-    "check": "tsc --noEmit",
+    "check": "tsc --noEmit -p tsconfig.check.json",
     "test": "node --test \"tests/*.test.ts\"",
     "measure": "node scripts/measure.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "site": "npm run build && node scripts/site.ts",
+    "serve": "node scripts/serve.ts"
   },
   "devDependencies": {
     "@huggingface/transformers": "^3.7.0",

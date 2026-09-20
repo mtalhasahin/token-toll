@@ -1,0 +1,58 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # The fast half: everything that needs nothing from the network.
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22.x, 24.x]
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm run check
+      - run: node --test "tests/core.test.ts"
+      - run: npm run build
+
+  # The claim the whole project rests on: that these counts are the real ones.
+  # Downloads six tokenizers, so it runs once rather than across a matrix.
+  reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/token-tax
+            ~/.cache/huggingface
+          key: tokenizers-${{ hashFiles('src/registry.ts') }}
+      - run: node --test "tests/reference.test.ts"
+
+  # The page is built from the compiled sources; if it stops building, the
+  # published one is stale and nobody would notice.
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+      - run: npm ci
+      - run: npm run site
+      - name: the committed docs/ must match what the build produces
+        run: git diff --exit-code -- docs/

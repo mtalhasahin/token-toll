@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Token Tax</title>
+    <meta
+      name="description"
+      content="What your language costs you in tokens. The same 2,009 sentences, measured in six real tokenizers."
+    />
+    <style>
+      :root {
+        --bg: #fbfaf8;
+        --panel: #ffffff;
+        --ink: #1a1917;
+        --muted: #6b6761;
+        --line: #e6e2db;
+        --accent: #b4552d;
+        --accent-soft: #f4e4da;
+        --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #16150f;
+          --panel: #1e1d17;
+          --ink: #eceae4;
+          --muted: #9a958c;
+          --line: #302e26;
+          --accent: #e0855c;
+          --accent-soft: #3a2a20;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #16150f;
+        --panel: #1e1d17;
+        --ink: #eceae4;
+        --muted: #9a958c;
+        --line: #302e26;
+        --accent: #e0855c;
+        --accent-soft: #3a2a20;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 0 16px 96px;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      main { max-width: 940px; margin: 0 auto; }
+      header { padding: 64px 0 40px; border-bottom: 1px solid var(--line); }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.02em; }
+      .lede { font-size: clamp(1.05rem, 2.5vw, 1.25rem); color: var(--muted); margin: 0; max-width: 34em; }
+      h2 { font-size: 1.35rem; margin: 56px 0 8px; letter-spacing: -0.01em; }
+      h2 + p { margin-top: 0; color: var(--muted); max-width: 40em; }
+      p { max-width: 40em; }
+      a { color: var(--accent); }
+
+      .headline {
+        display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0 0;
+      }
+      .stat {
+        flex: 1 1 200px; background: var(--panel); border: 1px solid var(--line);
+        border-radius: 10px; padding: 16px 18px;
+      }
+      .stat .n { font: 700 clamp(1.6rem, 5vw, 2.1rem)/1 var(--mono); color: var(--accent); letter-spacing: -0.02em; }
+      .stat .k { display: block; margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+
+      .scroll { overflow-x: auto; margin: 20px 0; -webkit-overflow-scrolling: touch; }
+      table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 640px; }
+      th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+      th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--bg); }
+      thead th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+      tbody td:not(:first-child) { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+      tr.me td { font-weight: 700; }
+      tr.me td:first-child { color: var(--accent); }
+      tr.base td { color: var(--muted); }
+      .heat { border-radius: 4px; padding: 2px 6px; }
+
+      .calc { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 20px; }
+      textarea {
+        width: 100%; min-height: 110px; resize: vertical; padding: 12px;
+        border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink);
+        font: 15px/1.5 var(--mono);
+      }
+      .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+      button, select {
+        font: inherit; font-size: 0.9rem; padding: 8px 14px; border-radius: 8px;
+        border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer;
+      }
+      button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+      button:disabled { opacity: 0.55; cursor: wait; }
+      .hint { color: var(--muted); font-size: 0.85rem; }
+      .samples button { font-size: 0.8rem; padding: 5px 10px; }
+
+      footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.87rem; }
+      code { font-family: var(--mono); font-size: 0.9em; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+      .caveat { border-left: 3px solid var(--line); padding-left: 16px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Token Tax</h1>
+        <p class="lede">
+          The same sentence costs more in some languages than in others, and nobody is shown the bill.
+          Here it is: 2,009 professionally translated sentences, counted in six real tokenizers.
+        </p>
+        <div class="headline" id="headline"></div>
+      </header>
+
+      <h2>What Turkish costs</h2>
+      <p>
+        Against the same English sentences, token for token. The number people repeat is “three times”.
+        It is not three times — but which tokenizer you send it to matters more than most people think.
+      </p>
+      <div class="scroll"><table id="turkish"></table></div>
+
+      <h2>Every language measured</h2>
+      <p>English is 1.00. Anything above it is what that language pays for saying the same thing.</p>
+      <div class="scroll"><table id="matrix"></table></div>
+
+      <h2>Weigh your own text</h2>
+      <p>
+        Runs in your browser, with the same tokenizer the measurements used — the model's own
+        <code>tokenizer.json</code>, fetched from Hugging Face the first time you pick it.
+      </p>
+      <div class="calc">
+        <textarea id="text" spellcheck="false">Evlerinizden çıkarken şemsiyenizi almayı unutmayın.</textarea>
+        <div class="row samples" id="samples"></div>
+        <div class="row">
+          <select id="model"></select>
+          <button class="primary" id="count">Count</button>
+          <span class="hint" id="status"></span>
+        </div>
+        <div class="scroll"><table id="counts"></table></div>
+      </div>
+
+      <h2>How it was measured</h2>
+      <p class="caveat" id="method"></p>
+
+      <footer>
+        <p>
+          <a href="https://github.com/mtalhasahin/token-tax">Source and results</a> ·
+          <a href="https://www.npmjs.com/package/token-tax"><code>npx token-tax</code></a> ·
+          Corpus: FLORES-200, CC BY-SA 4.0 · MIT
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
